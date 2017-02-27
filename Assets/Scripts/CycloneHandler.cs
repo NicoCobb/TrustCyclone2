@@ -13,6 +13,7 @@ public class CycloneHandler : RaycastController {
 	public float visibilityCircleSize = 2f;
 
 	public bool controlX = false;
+    public bool up = true;
 	public float xVelocity = 1f;
 
 	float gravity;
@@ -50,7 +51,8 @@ public class CycloneHandler : RaycastController {
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
 
 			if (hit) {
-				hit.transform.GetComponent<Player> ().velocity.y = maxJumpVelocity;
+                if (up) hit.transform.GetComponent<Player>().velocity.y = maxJumpVelocity;
+                else if (!up) hit.transform.GetComponent<Player>().velocity.y = maxJumpVelocity * -1;
 
 				if (controlX) {
 					hit.transform.GetComponent<Player> ().velocity.x = xVelocity;

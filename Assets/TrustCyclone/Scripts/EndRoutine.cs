@@ -3,22 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class EndRoutine : MonoBehaviour {
+public class EndRoutine : RaycastController {
 
     public GameObject text;
+    public LayerMask winMask;
+    public float winCircleSize = 2f;
 
-    void OnTriggerEnter2D(Collider2D coll)
+
+    private void Update()
     {
-        if(coll.gameObject.tag == "Player")
+        UpdateRaycastOrigins();
+        CheckWinCondition();   
+    }
+
+    void CheckWinCondition()
+    {
+        Vector2 rayOrigin = raycastOrigins.center;
+        Collider2D collider = Physics2D.OverlapCircle(rayOrigin, winCircleSize, winMask);
+
+        if(collider)
         {
             text.GetComponent<VictoryText>().Appear();
             StartCoroutine("SwitchScene");
         }
     }
 
+    void OnDrawGizmos()
+    {
+        Vector2 rayOrigin = raycastOrigins.center;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(rayOrigin, winCircleSize);
+    }
+
     IEnumerator SwitchScene()
     {
         yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(1);
+
+        int thisIndex = this.gameObject.scene.buildIndex;
+        SceneManager.LoadScene(thisIndex + 1);
     }
 }
