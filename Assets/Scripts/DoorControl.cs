@@ -21,10 +21,15 @@ public class DoorControl : RaycastController {
 	void Update () {
 		UpdateRaycastOrigins();
 		CheckPlateCondition();
-		if (open) {
+		if (tag == "NoSwitch") {
+			open = true;
 			anim.SetBool ("isOpen", true);
-		} else
-			anim.SetBool ("isOpen", false);
+		} else {
+			if (open) {
+				anim.SetBool ("isOpen", true);
+			} else
+				anim.SetBool ("isOpen", false);
+		}
 	}
 
 	void CheckPlateCondition()

@@ -8,6 +8,7 @@ public class PressurePlate : RaycastController {
 
     public Vector2 plateBoxSize;
     public LayerMask plateMask;
+	public GameObject platformToActivate;
 
     // Use this for initialization
     public override void Start () {
@@ -34,6 +35,10 @@ public class PressurePlate : RaycastController {
 			if (tag == "DoorPlate") {
 				DoorControl.open = true;
 			}
+
+			if (tag == "PlatformPlate") {
+				platformToActivate.GetComponent<PlatformController> ().activated = true;
+			}
         }
 
         if(!collider)
@@ -42,6 +47,10 @@ public class PressurePlate : RaycastController {
 
 			if (tag == "DoorPlate") {
 				DoorControl.open = false;
+			}
+
+			if (tag == "PlatformPlate") {
+				platformToActivate.GetComponent<PlatformController> ().activated = false;
 			}
         }
     }
