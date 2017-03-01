@@ -19,13 +19,13 @@ public class Player : MonoBehaviour {
 	public float wallStickTime = .25f;
 	float timeToWallUnstick;
 
-	float gravity;
+	[HideInInspector]
+	public float gravity;
 	float maxJumpVelocity;
 	float minJumpVelocity;
 	[HideInInspector]
 	public Vector3 velocity;
 	float velocityXSmoothing;
-
 	Controller2D controller;
 
 	Vector2 directionalInput;

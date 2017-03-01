@@ -5,11 +5,11 @@ using UnityEngine;
 public class RespawnManager : MonoBehaviour {
 
 	public GameObject currentCheckpoint;
-	private Controller2D player;
+	private Player player;
 
 	// Use this for initialization
 	void Start () {
-		player = FindObjectOfType<Controller2D>();
+		player = FindObjectOfType<Player>();
 	}
 	
 	// Update is called once per frame

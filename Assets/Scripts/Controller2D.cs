@@ -9,10 +9,15 @@ public class Controller2D : RaycastController {
 	[HideInInspector]
 	public Vector2 playerInput;
 
+	public LayerMask pushMask;
+
 	public override void Start() {
 		base.Start ();
 		collisions.faceDir = 1;
 
+	}
+	public void Move(Vector2 moveAmount) {
+		Move (moveAmount, false);
 	}
 
 	public void Move(Vector2 moveAmount, bool standingOnPlatform) {
@@ -59,6 +64,8 @@ public class Controller2D : RaycastController {
 			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
 
+			RaycastHit2D block = Physics2D.Raycast (rayOrigin, Vector2.right * directionX, rayLength, pushMask);
+
 			Debug.DrawRay(rayOrigin, Vector2.right * directionX,Color.red);
 
 			if (hit) {
@@ -94,6 +101,10 @@ public class Controller2D : RaycastController {
 					collisions.left = directionX == -1;
 					collisions.right = directionX == 1;
 				}
+			}
+
+			if (block) {
+				block.transform.GetComponent<Moveable2D> ().Move (moveAmount);
 			}
 		}
 	}

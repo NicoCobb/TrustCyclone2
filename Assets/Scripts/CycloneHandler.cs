@@ -6,6 +6,7 @@ public class CycloneHandler : RaycastController {
 
 	public LayerMask passengerMask;
 	public LayerMask visibilityMask;
+	public LayerMask boxMask;
 	ParticleSystem ps;
 
 	public float timeToJumpApex = .4f;
@@ -49,6 +50,7 @@ public class CycloneHandler : RaycastController {
 			rayOrigin += Vector2.right * (verticalRaySpacing * i);
 
 			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
+			RaycastHit2D boxes = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, boxMask);
 
 			if (hit) {
                 if (up) hit.transform.GetComponent<Player>().velocity.y = maxJumpVelocity;
@@ -56,6 +58,15 @@ public class CycloneHandler : RaycastController {
 
 				if (controlX) {
 					hit.transform.GetComponent<Player> ().velocity.x = xVelocity;
+				}
+			}
+
+			if (boxes) {
+				if (up) boxes.transform.GetComponent<BoxHandler>().velocity.y = maxJumpVelocity;
+				else if (!up) boxes.transform.GetComponent<BoxHandler>().velocity.y = maxJumpVelocity * -1;
+
+				if (controlX) {
+					boxes.transform.GetComponent<BoxHandler> ().velocity.x = xVelocity;
 				}
 			}
 

@@ -26,6 +26,7 @@ public class PlatformController : RaycastController {
 
 	[HideInInspector]
 	Dictionary<Transform,Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
+	Dictionary<Transform,Moveable2D> passengerBoxDictionary = new Dictionary<Transform, Moveable2D>();
 	
 	public override void Start () {
 		base.Start ();
@@ -90,13 +91,24 @@ public class PlatformController : RaycastController {
 
 	public virtual void MovePassengers(bool beforeMovePlatform) {
 		foreach (PassengerMovement passenger in passengerMovement) {
-			if (!passengerDictionary.ContainsKey(passenger.transform)) {
-				passengerDictionary.Add(passenger.transform,passenger.transform.GetComponent<Controller2D>());
+			if (passenger.transform.GetComponent("Controller2D") != null) {
+				if (!passengerDictionary.ContainsKey (passenger.transform)) {
+					passengerDictionary.Add (passenger.transform, passenger.transform.GetComponent<Controller2D> ());
+				}
+
+				if (passenger.moveBeforePlatform == beforeMovePlatform) {
+					passengerDictionary [passenger.transform].Move (passenger.velocity, passenger.standingOnPlatform);
+				}
+			} else if (passenger.transform.GetComponent("Moveable2D") != null) {
+				if (!passengerBoxDictionary.ContainsKey (passenger.transform)) {
+					passengerBoxDictionary.Add (passenger.transform, passenger.transform.GetComponent<Moveable2D> ());
+				}
+
+				if (passenger.moveBeforePlatform == beforeMovePlatform) {
+					passengerBoxDictionary [passenger.transform].Move (passenger.velocity, passenger.standingOnPlatform);
+				}
 			}
 
-			if (passenger.moveBeforePlatform == beforeMovePlatform) {
-				passengerDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
-			}
 		}
 	}
 
